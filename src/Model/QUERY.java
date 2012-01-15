@@ -44,4 +44,24 @@ final public class QUERY {
     
     final static String FIDELITE_FROM_USER = "SELECT * FROM caisse.`user` WHERE `iduser` = ";
     final static String UPDATE_FIDELITE_FROM_USER = "UPDATE  `caisse`.`user` SET  `fidelite` = ? WHERE  `user`.`iduser` = ?";
+
+    
+    final static String ADD_CLIENT = "INSERT INTO  `caisse`.`user` (`iduser` ,`sexe` ,`nom` ,`prenom` ,`fidelite`)"+
+                                                           "VALUES (NULL ,"+
+                                                                    "?,"+
+                                                                    "?,"+
+                                                                    "?,"+
+                                                                    "0)";
+
+    
+    final static String UPDATE_PRODUIT_BY_ID = "UPDATE  `caisse`.`produit` "
+            + "SET  `titre` =  ?,"
+            + "`description` = ?,"
+            + "`prix` = ?, "
+            + "`stock` = ? "
+            + "WHERE `produit`.`idproduit` = ?";
+    
+    
+    
+    
 }

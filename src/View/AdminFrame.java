@@ -10,26 +10,31 @@
  */
 package View;
 
+import Controller.CallBackEvent;
 import Model.ClientRepository;
 import Model.DataModel;
 import Model.Facture;
 import Model.FactureRepository;
+import Model.Produit;
 import Model.ProduitRepository;
 import java.awt.Point;
 import javax.swing.JFileChooser;
+import javax.swing.JTabbedPane;
 
 /**
  *
  * @author kmeleon
  */
-public class AdminFrame extends javax.swing.JFrame {
+public class AdminFrame extends javax.swing.JFrame implements CallBackEvent {
+    
+    
 
     /** Creates new form AdminFrame */
     public AdminFrame() {
         this.dataModel = new DataModel();
-        this.clientRep = new ClientRepository(this.dataModel);
         this.produitRep = new ProduitRepository(this.dataModel);
         this.factureRep = new FactureRepository(this.dataModel);
+        this.clientRep = new ClientRepository(this.dataModel);
         this.produitRep.loadData();
         this.factureRep.loadData();
         initComponents();
@@ -48,6 +53,17 @@ public class AdminFrame extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         produits = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtFieldTitre = new javax.swing.JTextField();
+        txtFieldPrix = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtAreaDesc = new javax.swing.JTextArea();
+        spinnerStock = new javax.swing.JSpinner();
+        jLabel8 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         tableProduit = new javax.swing.JTable();
         utilisateur = new javax.swing.JPanel();
@@ -80,19 +96,94 @@ public class AdminFrame extends javax.swing.JFrame {
         fileChooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("View/Bundle"); // NOI18N
-        setTitle(bundle.getString("AdminFrame.title")); // NOI18N
+        setTitle("Caisse Enregistreuse");
         setLocation(new Point(640-(this.getWidth()/2),0));
+
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
+
+        jPanel3.setBackground(new java.awt.Color(153, 153, 153));
+
+        jLabel2.setText("Titre :");
+
+        jLabel4.setText("Déscription :");
+
+        jLabel6.setText("Prix :");
+
+        jLabel7.setText("Strock :");
+
+        txtAreaDesc.setColumns(20);
+        txtAreaDesc.setLineWrap(true);
+        txtAreaDesc.setRows(5);
+        txtAreaDesc.setWrapStyleWord(true);
+        jScrollPane2.setViewportView(txtAreaDesc);
+
+        jLabel8.setText("€");
+
+        jButton1.setText("Modifier");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 908, Short.MAX_VALUE)
+            .add(jPanel3Layout.createSequentialGroup()
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel3Layout.createSequentialGroup()
+                        .add(20, 20, 20)
+                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(jPanel3Layout.createSequentialGroup()
+                                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jLabel2)
+                                    .add(jLabel6)
+                                    .add(jLabel7))
+                                .add(42, 42, 42)
+                                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(txtFieldTitre, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 332, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(jPanel3Layout.createSequentialGroup()
+                                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                                            .add(org.jdesktop.layout.GroupLayout.LEADING, spinnerStock)
+                                            .add(org.jdesktop.layout.GroupLayout.LEADING, txtFieldPrix, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
+                                        .add(18, 18, 18)
+                                        .add(jLabel8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                .add(133, 133, 133))
+                            .add(jPanel3Layout.createSequentialGroup()
+                                .add(jLabel4)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))))
+                    .add(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jButton1)))
+                .add(10, 10, 10)
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 208, Short.MAX_VALUE)
+            .add(jPanel3Layout.createSequentialGroup()
+                .add(jLabel4)
+                .add(4, 4, 4)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(txtFieldTitre, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel2))
+                .add(35, 35, 35)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(txtFieldPrix, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel8)
+                    .add(jLabel6))
+                .add(30, 30, 30)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(spinnerStock, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel7))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 29, Short.MAX_VALUE)
+                .add(jButton1)
+                .addContainerGap())
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
         );
 
         tableProduit.setModel(this.produitRep);
@@ -111,7 +202,7 @@ public class AdminFrame extends javax.swing.JFrame {
             .add(org.jdesktop.layout.GroupLayout.TRAILING, produitsLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(produitsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 908, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 918, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -119,19 +210,19 @@ public class AdminFrame extends javax.swing.JFrame {
             produitsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, produitsLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                .add(jScrollPane5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
                 .add(18, 18, 18)
                 .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab(bundle.getString("AdminFrame.produits.TabConstraints.tabTitle"), produits); // NOI18N
+        jTabbedPane1.addTab("Produits", produits);
 
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 908, Short.MAX_VALUE)
+            .add(0, 918, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -148,7 +239,7 @@ public class AdminFrame extends javax.swing.JFrame {
             .add(org.jdesktop.layout.GroupLayout.TRAILING, utilisateurLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(utilisateurLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 908, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 918, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -162,7 +253,7 @@ public class AdminFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab(bundle.getString("AdminFrame.utilisateur.TabConstraints.tabTitle"), utilisateur); // NOI18N
+        jTabbedPane1.addTab("Utilisateurs", utilisateur);
 
         tableContenu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -177,7 +268,7 @@ public class AdminFrame extends javax.swing.JFrame {
         ));
         jScrollPane4.setViewportView(tableContenu);
 
-        tabbedContenue.addTab(bundle.getString("AdminFrame.jScrollPane4.TabConstraints.tabTitle"), jScrollPane4); // NOI18N
+        tabbedContenue.addTab("Contenus", jScrollPane4);
 
         tabbedFacture.setBackground(java.awt.Color.green);
 
@@ -189,9 +280,9 @@ public class AdminFrame extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tableFacture);
 
-        tabbedFacture.addTab(bundle.getString("AdminFrame.jScrollPane3.TabConstraints.tabTitle"), jScrollPane3); // NOI18N
+        tabbedFacture.addTab("Factures", jScrollPane3);
 
-        buttonEnregistrer.setText(bundle.getString("AdminFrame.buttonEnregistrer.text")); // NOI18N
+        buttonEnregistrer.setText("Engeristrer");
         buttonEnregistrer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonEnregistrerActionPerformed(evt);
@@ -199,27 +290,29 @@ public class AdminFrame extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 13));
-        jLabel1.setText(bundle.getString("AdminFrame.jLabel1.text")); // NOI18N
+        jLabel1.setText("Sous-Total :");
 
         labelSousTotal.setBackground(java.awt.Color.red);
         labelSousTotal.setFont(new java.awt.Font("OCR A Std", 1, 13));
         labelSousTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelSousTotal.setText(bundle.getString("AdminFrame.labelSousTotal.text")); // NOI18N
+        labelSousTotal.setText("0.0 €");
 
         jLabel3.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 13));
-        jLabel3.setText(bundle.getString("AdminFrame.jLabel3.text")); // NOI18N
+        jLabel3.setText("Remise :");
 
         labelRemise.setFont(new java.awt.Font("OCR A Std", 1, 13));
+        labelRemise.setForeground(new java.awt.Color(0, 153, 0));
         labelRemise.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelRemise.setText(bundle.getString("AdminFrame.labelRemise.text")); // NOI18N
+        labelRemise.setText("0 %");
 
         jLabel5.setFont(new java.awt.Font("Lucida Grande", 1, 13));
-        jLabel5.setText(bundle.getString("AdminFrame.jLabel5.text")); // NOI18N
+        jLabel5.setText("Total :");
 
         labelTotal.setBackground(java.awt.Color.red);
         labelTotal.setFont(new java.awt.Font("OCR A Std", 1, 13));
+        labelTotal.setForeground(java.awt.Color.red);
         labelTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelTotal.setText(bundle.getString("AdminFrame.labelTotal.text")); // NOI18N
+        labelTotal.setText("0.0 €");
 
         org.jdesktop.layout.GroupLayout facturesLayout = new org.jdesktop.layout.GroupLayout(factures);
         factures.setLayout(facturesLayout);
@@ -234,20 +327,20 @@ public class AdminFrame extends javax.swing.JFrame {
                         .add(111, 111, 111)
                         .add(facturesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                             .add(org.jdesktop.layout.GroupLayout.LEADING, facturesLayout.createSequentialGroup()
-                                .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(labelRemise, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE))
+                                .add(labelRemise, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
                             .add(facturesLayout.createSequentialGroup()
-                                .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(labelSousTotal, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))
+                                .add(labelSousTotal, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
                             .add(org.jdesktop.layout.GroupLayout.LEADING, facturesLayout.createSequentialGroup()
                                 .add(jLabel5)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(labelTotal, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)))
+                                .add(labelTotal, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)))
                         .add(14, 14, 14))
                     .add(buttonEnregistrer)
-                    .add(tabbedContenue, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE))
+                    .add(tabbedContenue, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE))
                 .addContainerGap())
         );
         facturesLayout.setVerticalGroup(
@@ -277,12 +370,12 @@ public class AdminFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab(bundle.getString("AdminFrame.factures.TabConstraints.tabTitle"), factures); // NOI18N
+        jTabbedPane1.addTab("Factures", factures);
 
-        jMenu1.setText(bundle.getString("AdminFrame.jMenu1.text")); // NOI18N
+        jMenu1.setText("File");
 
         menuItemQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.META_MASK));
-        menuItemQuit.setText(bundle.getString("AdminFrame.menuItemQuit.text")); // NOI18N
+        menuItemQuit.setText("Quitter");
         menuItemQuit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuItemQuitActionPerformed(evt);
@@ -292,13 +385,13 @@ public class AdminFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText(bundle.getString("AdminFrame.jMenu2.text")); // NOI18N
+        jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
-        menuUser.setText(bundle.getString("AdminFrame.menuUser.text")); // NOI18N
+        menuUser.setText("Utilisateurs");
 
         menuItemAjouterUser.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.META_MASK));
-        menuItemAjouterUser.setText(bundle.getString("AdminFrame.menuItemAjouterUser.text")); // NOI18N
+        menuItemAjouterUser.setText("Ajouter");
         menuItemAjouterUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuItemAjouterUserActionPerformed(evt);
@@ -308,10 +401,10 @@ public class AdminFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(menuUser);
 
-        menuProduit.setText(bundle.getString("AdminFrame.menuProduit.text")); // NOI18N
+        menuProduit.setText("Produits");
 
         menuItemAjouterProduit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.META_MASK));
-        menuItemAjouterProduit.setText(bundle.getString("AdminFrame.menuItemAjouterProduit.text")); // NOI18N
+        menuItemAjouterProduit.setText("Ajouter");
         menuItemAjouterProduit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuItemAjouterProduitActionPerformed(evt);
@@ -329,7 +422,7 @@ public class AdminFrame extends javax.swing.JFrame {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 969, Short.MAX_VALUE)
+                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 979, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -344,7 +437,7 @@ public class AdminFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuItemAjouterUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAjouterUserActionPerformed
-        AddClientFrame addClientFrame = new AddClientFrame();
+        AddClientFrame addClientFrame = new AddClientFrame(this);
     }//GEN-LAST:event_menuItemAjouterUserActionPerformed
 
     private void menuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemQuitActionPerformed
@@ -400,11 +493,86 @@ public class AdminFrame extends javax.swing.JFrame {
         this.labelRemise.setText("-" +fact.getRemise()+ " %");
         
     }//GEN-LAST:event_tableFactureMouseClicked
-
+    /**
+     * 
+     * @param evt 
+     */
     private void tableProduitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableProduitMouseClicked
-        System.out.println(this.tableProduit.getSelectedRow());
+        
+        int row = this.tableProduit.getSelectedRow();
+        this.txtFieldTitre.setText((String)this.tableProduit.getValueAt(row, 1));
+        this.txtAreaDesc.setText((String)this.tableProduit.getValueAt(row, 2));
+        this.txtFieldPrix.setText((String)this.tableProduit.getValueAt(row, 5));
+        this.spinnerStock.setValue(Integer.valueOf((String)this.tableProduit.getValueAt(row, 6)));
+        
     }//GEN-LAST:event_tableProduitMouseClicked
-/**
+    /**
+     * 
+     * @param evt 
+     */
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        
+        JTabbedPane pane = (JTabbedPane) evt.getSource();
+        switch(pane.getSelectedIndex()){
+            
+            case 0 :
+                System.out.println("Produit");
+                this.produitRep=null;
+                this.produitRep = new ProduitRepository(this.dataModel);
+                this.produitRep.loadData();
+                this.tableProduit.setModel(produitRep);
+                this.tableProduit.repaint();
+                break;
+                
+            case 1 : 
+                System.out.println("client");
+                this.clientRep = null;
+                this.clientRep = new ClientRepository(this.dataModel);
+                this.clientRep.loadData();
+                 this.JtableUser.setModel(clientRep);
+                this.JtableUser.repaint();
+                
+                break;
+                
+                
+            case 2 :
+                System.out.println("facture");
+                this.factureRep =null;
+                this.factureRep = new FactureRepository(this.dataModel);
+                this.factureRep.loadData();
+                tableFacture.setModel(this.factureRep);
+                //this.tabbedFacture.setModel(this.factureRep);
+                this.tableFacture.repaint();
+                break;
+            
+            case 3 : 
+                break;
+                
+            default:
+        }
+        
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+       int row = this.tableProduit.getSelectedRow();
+        String id = (String)this.tableProduit.getModel().getValueAt(row, 0);
+        String titre = this.txtFieldTitre.getText();
+        String desc = this.txtAreaDesc.getText();
+        float prix = Float.valueOf(this.txtFieldPrix.getText());
+        int stock = (Integer)this.spinnerStock.getValue();
+        
+        this.produitRep.updateProduitFromID(id, titre, desc, prix, stock);
+        
+        System.out.println("Produit");
+                this.produitRep=null;
+                //this.dataModel.setConnection(null);
+                this.produitRep = new ProduitRepository(this.dataModel);
+                this.produitRep.loadData();
+                this.tableProduit.setModel(produitRep);
+                this.tableProduit.repaint();
+    }//GEN-LAST:event_jButton1ActionPerformed
+    /**
      * 
      */
     private void ajouterProduit() {
@@ -421,6 +589,14 @@ public class AdminFrame extends javax.swing.JFrame {
 
             public void run() {
                 new AdminFrame().setVisible(true);
+               
+                
+            }
+        });
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                
                 new CaisseFrame();
                 
             }
@@ -436,15 +612,22 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JButton buttonEnregistrer;
     private javax.swing.JPanel factures;
     private javax.swing.JFileChooser fileChooser;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
@@ -458,13 +641,25 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JMenu menuProduit;
     private javax.swing.JMenu menuUser;
     private javax.swing.JPanel produits;
+    private javax.swing.JSpinner spinnerStock;
     private javax.swing.JTabbedPane tabbedContenue;
     private javax.swing.JTabbedPane tabbedFacture;
     private javax.swing.JTable tableContenu;
     private javax.swing.JTable tableFacture;
     private javax.swing.JTable tableProduit;
+    private javax.swing.JTextArea txtAreaDesc;
+    private javax.swing.JTextField txtFieldPrix;
+    private javax.swing.JTextField txtFieldTitre;
     private javax.swing.JPanel utilisateur;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void dataAddedToDb() {
+        this.clientRep = null;
+        //this.dataModel.setConnection(null);
+        this.clientRep = new ClientRepository(this.dataModel);
+        this.JtableUser.setModel(clientRep);
+    }
 
     
 }

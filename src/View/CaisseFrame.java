@@ -10,6 +10,7 @@
  */
 package View;
 
+import Controller.CallBackEvent;
 import Controller.DataChangeEvent;
 import Controller.DataChangeListener;
 import Model.Client;
@@ -28,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JComboBox;
+import javax.swing.JProgressBar;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -38,13 +40,14 @@ import javax.swing.SpinnerNumberModel;
  *
  * @author kmeleon
  */
-public class CaisseFrame extends javax.swing.JFrame {
+public class CaisseFrame extends javax.swing.JFrame implements CallBackEvent{
 
     /** Creates new form CaisseFrame */
     public CaisseFrame() {
         this.dataModel = new DataModel();
         this.iniData();
         initComponents();
+        
         this.factureRep.addMyEventListener(new DataChangeListener() {
             @Override
             public void dataChanged(DataChangeEvent evt) {
@@ -81,6 +84,7 @@ public class CaisseFrame extends javax.swing.JFrame {
         labelRemise = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         labelTotal = new javax.swing.JLabel();
+        buttonAnnuler = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableFacture = new javax.swing.JTable();
         panelProduit = new javax.swing.JTabbedPane();
@@ -90,12 +94,11 @@ public class CaisseFrame extends javax.swing.JFrame {
         buttonAjouter = new javax.swing.JButton();
         labelPrix = new javax.swing.JLabel();
         labelPrixUni = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
         panelClient = new javax.swing.JTabbedPane();
         cliPanel = new javax.swing.JPanel();
         comboBoxUser = new javax.swing.JComboBox();
         buttonChoisir = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        buttonAjouterClient = new javax.swing.JButton();
         panelUserInfo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -104,7 +107,7 @@ public class CaisseFrame extends javax.swing.JFrame {
         labelUserName = new javax.swing.JLabel();
         labelUserPrenom = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         paneCaisse.setEnabled(false);
         paneCaisse.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -143,10 +146,10 @@ public class CaisseFrame extends javax.swing.JFrame {
         labelSousTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelSousTotal.setText("0.0 €");
 
-        labelRemise.setFont(new java.awt.Font("OCR A Std", 1, 13)); // NOI18N
+        labelRemise.setFont(new java.awt.Font("OCR A Std", 1, 13));
         labelRemise.setForeground(new java.awt.Color(0, 153, 0));
         labelRemise.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        labelRemise.setText("0 %");
+        labelRemise.setText("- 0 %");
 
         jLabel7.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 13));
         jLabel7.setText("Total:");
@@ -157,13 +160,20 @@ public class CaisseFrame extends javax.swing.JFrame {
         labelTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelTotal.setText("0.0 €");
 
+        buttonAnnuler.setText("Annuler");
+        buttonAnnuler.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAnnulerActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 854, Short.MAX_VALUE)
+            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 855, Short.MAX_VALUE)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(545, Short.MAX_VALUE)
+                .addContainerGap(546, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 89, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 123, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -175,7 +185,9 @@ public class CaisseFrame extends javax.swing.JFrame {
                     .add(labelTotal, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .add(670, 670, 670)
+                .add(buttonAnnuler)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(buttonValider))
         );
         jPanel1Layout.setVerticalGroup(
@@ -195,8 +207,10 @@ public class CaisseFrame extends javax.swing.JFrame {
                     .add(labelTotal)
                     .add(jLabel7))
                 .add(18, 18, 18)
-                .add(buttonValider)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(buttonValider)
+                    .add(buttonAnnuler))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         paneCaisse.addTab("Panier", jPanel1);
@@ -252,8 +266,6 @@ public class CaisseFrame extends javax.swing.JFrame {
         labelPrixUni.setFont(new java.awt.Font("OCR A Std", 1, 13));
         labelPrixUni.setText("0.0 €");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -262,10 +274,8 @@ public class CaisseFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .add(comboBoxProduit, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 248, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(37, 37, 37)
-                .add(labelPrixUni, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
+                .add(labelPrixUni, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                .add(119, 119, 119)
                 .add(spinnerQuantite, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 64, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(41, 41, 41)
                 .add(labelPrix, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -281,8 +291,7 @@ public class CaisseFrame extends javax.swing.JFrame {
                     .add(spinnerQuantite, 0, 0, Short.MAX_VALUE)
                     .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                         .add(comboBoxProduit, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(labelPrixUni)
-                        .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(labelPrixUni))
                     .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                         .add(buttonAjouter)
                         .add(labelPrix, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 26, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
@@ -305,25 +314,25 @@ public class CaisseFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("+");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        buttonAjouterClient.setText("+");
+        buttonAjouterClient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                buttonAjouterClientActionPerformed(evt);
             }
         });
 
         panelUserInfo.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel1.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 14));
         jLabel1.setText("Nom :");
 
-        jLabel2.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 14));
         jLabel2.setText("Prénom :");
 
-        jLabel5.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 14));
         jLabel5.setText("Fidélité");
 
-        labelFid.setFont(new java.awt.Font("OCR A Std", 1, 24)); // NOI18N
+        labelFid.setFont(new java.awt.Font("OCR A Std", 1, 24));
         labelFid.setForeground(new java.awt.Color(255, 0, 0));
         labelFid.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelFid.setText("0");
@@ -379,8 +388,8 @@ public class CaisseFrame extends javax.swing.JFrame {
                     .add(buttonChoisir)
                     .add(comboBoxUser, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 238, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
-                .add(jButton1)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 13, Short.MAX_VALUE)
+                .add(buttonAjouterClient)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 14, Short.MAX_VALUE)
                 .add(panelUserInfo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
         cliPanelLayout.setVerticalGroup(
@@ -391,7 +400,7 @@ public class CaisseFrame extends javax.swing.JFrame {
                         .add(41, 41, 41)
                         .add(cliPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(comboBoxUser, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jButton1))
+                            .add(buttonAjouterClient))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(buttonChoisir))
                     .add(panelUserInfo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -407,9 +416,9 @@ public class CaisseFrame extends javax.swing.JFrame {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, paneCaisse, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 875, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, panelProduit, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 875, Short.MAX_VALUE)
-                    .add(panelClient, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 875, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, paneCaisse, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, panelProduit, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE)
+                    .add(panelClient, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -420,8 +429,8 @@ public class CaisseFrame extends javax.swing.JFrame {
                 .add(18, 18, 18)
                 .add(panelProduit, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(2, 2, 2)
-                .add(paneCaisse, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
-                .addContainerGap())
+                .add(paneCaisse, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                .add(38, 38, 38))
         );
 
         pack();
@@ -484,7 +493,7 @@ public class CaisseFrame extends javax.swing.JFrame {
         this.client.getPanier().add(this.produitRep.getProduitById(value));
         this.labelSousTotal.setText(client.getPanier().getPrixTotal()+" €");
         float prixtt = client.getPanier().getPrixTotal();
-        if(this.client.getFidelite()%10 == 0){
+        if(this.client.getFidelite() != 0 && this.client.getFidelite()%10 == 0){
             prixtt = prixtt - ((prixtt*10)/100);
         }
         this.labelTotal.setText(prixtt + " €");
@@ -497,12 +506,15 @@ public class CaisseFrame extends javax.swing.JFrame {
      * @param evt 
      */
     private void buttonChoisirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChoisirActionPerformed
-        String value = ((KeyValue) this.comboBoxUser.getSelectedItem()).getValue();
-        this.client = this.clientRep.getClientById(value);
-        this.changeEnable(true);
-        this.changeClientEnable(false);
-        this.tablePanier.setModel(this.client.getPanier());
-        if(this.client.getFidelite()%10 == 0){this.labelRemise.setText("-"+10+" %");
+        int index = this.comboBoxUser.getSelectedIndex();
+        if(index>-1){
+            String value = ((KeyValue) this.comboBoxUser.getSelectedItem()).getValue();
+            this.client = this.clientRep.getClientById(value);
+            this.changeEnable(true);
+            this.changeClientEnable(false);
+            this.tablePanier.setModel(this.client.getPanier());
+            if(this.client.getFidelite() !=0 && this.client.getFidelite()%10 == 0){this.labelRemise.setText("-"+10+" %");
+            }
         }
     }//GEN-LAST:event_buttonChoisirActionPerformed
     /**
@@ -537,9 +549,25 @@ public class CaisseFrame extends javax.swing.JFrame {
      * 
      * @param evt 
      */
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void buttonAjouterClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAjouterClientActionPerformed
         new AddClientFrame(this);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        
+    }//GEN-LAST:event_buttonAjouterClientActionPerformed
+
+    private void buttonAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAnnulerActionPerformed
+        this.changeEnable(false);
+        this.changeClientEnable(true);
+        this.clearPanierPane();
+        this.client.getPanier().cleanData();
+        this.client = null;
+        this.produitRep = null;
+        this.clientRep = null;
+        this.factureRep = null;
+        this.tablePanier.clearSelection();  
+        
+        
+        this.iniData();
+    }//GEN-LAST:event_buttonAnnulerActionPerformed
     /**
      * 
      */
@@ -598,9 +626,10 @@ public class CaisseFrame extends javax.swing.JFrame {
         this.client.getPanier().cleanData();
         this.client = null;
         this.produitRep = null;
-        clientRep = null;
+        this.clientRep = null;
         this.factureRep = null;
-        this.tablePanier.clearSelection(); 
+        this.tablePanier.clearSelection();  
+        
         
         this.iniData();
         
@@ -647,12 +676,19 @@ public class CaisseFrame extends javax.swing.JFrame {
          String[] record = new String[v.size()];
          
      }
+     /**
+      * 
+      */
      private void iniData(){
-         this.clientRep = new ClientRepository(this.dataModel);
+       
+        
+        this.clientRep = new ClientRepository(this.dataModel);
         this.produitRep = new ProduitRepository(this.dataModel);
         this.factureRep = new FactureRepository(this.dataModel);
         this.produitRep.loadData();
         this.factureRep.loadData();
+        
+        
      }
     /**
      * 
@@ -662,18 +698,19 @@ public class CaisseFrame extends javax.swing.JFrame {
     private FactureRepository factureRep;
     private DataModel dataModel;
     private Client client;
+   
     
     //My Custom attributs
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAjouter;
+    private javax.swing.JButton buttonAjouterClient;
+    private javax.swing.JButton buttonAnnuler;
     private javax.swing.JButton buttonChoisir;
     private javax.swing.JButton buttonValider;
     private javax.swing.JPanel cliPanel;
     private javax.swing.JComboBox comboBoxProduit;
     private javax.swing.JComboBox comboBoxUser;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -700,6 +737,13 @@ public class CaisseFrame extends javax.swing.JFrame {
     private javax.swing.JTable tableFacture;
     private javax.swing.JTable tablePanier;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void dataAddedToDb() {
+        this.clientRep = null;
+        this.clientRep = new ClientRepository(this.dataModel);
+        this.iniData();
+    }
 
     
 }

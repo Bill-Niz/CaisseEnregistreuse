@@ -79,14 +79,14 @@ public class FactureRepository extends Repository {
                             record[i] = result.getString(i + 1);
                         }
                         this.TableList.addElement(record);
+                        this.fireTableChanged(null);
                         
                    
                         
             }
-            
-            //this.dataSource.getConnection().close();
-            //result.close();
-            //result.getStatement().close();
+            result.getStatement().close();
+            result.close();
+            this.dataSource.releaseConnection();
             
             
         } catch (SQLException ex) {
@@ -131,9 +131,9 @@ public class FactureRepository extends Repository {
                         fireTableChanged(null);
                     
             }
-            //result.close();
-            //result.getStatement().close();
-            //this.dataSource.getConnection().close();
+            result.getStatement().close();
+            result.close();
+            this.dataSource.releaseConnection();
             
         } catch (SQLException ex) {
             Logger.getLogger(DataModel.class.getName()).log(Level.SEVERE, null, ex);

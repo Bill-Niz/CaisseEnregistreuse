@@ -85,20 +85,26 @@ public final class ClientRepository extends Repository {
                             record[i] = result.getString(i + 1);
                         }
                         this.TableList.addElement(record);
+                        this.fireTableChanged(null);
                         
                    
                         
             }
             
-            //this.dataSource.getConnection().close();
-            //result.close();
-            //result.getStatement().close();
+            result.getStatement().close();
+            result.close();
+            this.dataSource.releaseConnection();
             
             
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    /**
+     * 
+     * @param i
+     * @return 
+     */
     @Override
     public Object getElementAt(int i) {
         return new KeyValue(((String[]) this.TableList.elementAt(i))[2]+ " " + ((String[]) this.TableList.elementAt(i))[3],((String[]) this.TableList.elementAt(i))[0]);

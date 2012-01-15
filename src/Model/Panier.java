@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Array.*;
 import java.sql.ResultSetMetaData;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -113,6 +114,8 @@ public class Panier extends AbstractTableModel{
        addUpdateFidelite.executeUpdate();
       
       con.commit();
+      Facture f = new Facture(reference,new Date(),remise,this.listProduit);
+      f.generatePdf("/Users/kmeleon/");
       
       
     
@@ -131,6 +134,7 @@ public class Panier extends AbstractTableModel{
                 if (addFacture != null) { addFacture.close(); }
                 if (addListProduit != null) { addListProduit.close(); }
                 con.setAutoCommit(true);
+                dataModel.releaseConnection();
             } catch (SQLException ex) {
                 Logger.getLogger(Panier.class.getName()).log(Level.SEVERE, null, ex);
             }

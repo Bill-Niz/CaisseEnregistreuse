@@ -10,7 +10,15 @@
  */
 package View;
 
+import Controller.CallBackEvent;
+import Model.DataModel;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import Model.QUERY;
 
 /**
  *
@@ -18,20 +26,17 @@ import javax.swing.JFrame;
  */
 public class AddClientFrame extends javax.swing.JFrame {
     private Object CallBackFrame;
-
+    private CallBackEvent callBack;
+   
     /** Creates new form AddClientFrame */
-    public AddClientFrame() {
+    public AddClientFrame(CallBackEvent callBack) {
+        this.dataModel = new DataModel();
+        this.callBack=callBack;
         initComponents();
+        
         this.setVisible(true);
     }
-    /**
-     * 
-     * @param aThis 
-     */
-    AddClientFrame(JFrame callBackFrame) {
-        this.CallBackFrame = callBackFrame;
-    }
-
+   
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -46,8 +51,8 @@ public class AddClientFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtFieldNom = new javax.swing.JTextField();
         txtFieldPrenom = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
+        comboSexe = new javax.swing.JComboBox();
+        buttonAjouter = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Ajouter Utilisateur");
@@ -64,9 +69,15 @@ public class AddClientFrame extends javax.swing.JFrame {
 
         txtFieldPrenom.setToolTipText("Prenom");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "M.", "Mme", "Melle" }));
+        comboSexe.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "M.", "Mme", "Melle" }));
+        comboSexe.setSelectedIndex(0);
 
-        jButton1.setText("Ajouter");
+        buttonAjouter.setText("Ajouter");
+        buttonAjouter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAjouterActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,13 +91,13 @@ public class AddClientFrame extends javax.swing.JFrame {
                     .add(jLabel3))
                 .add(85, 85, 85)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jComboBox1, 0, 117, Short.MAX_VALUE)
+                    .add(comboSexe, 0, 117, Short.MAX_VALUE)
                     .add(txtFieldPrenom)
                     .add(txtFieldNom, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 197, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(270, Short.MAX_VALUE)
-                .add(jButton1)
+                .add(buttonAjouter)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -103,19 +114,72 @@ public class AddClientFrame extends javax.swing.JFrame {
                 .add(11, 11, 11)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(jLabel3)
-                    .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(comboSexe, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
-                .add(jButton1)
+                .add(buttonAjouter)
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-   
+    private void buttonAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAjouterActionPerformed
+        if(this.txtFieldNom.getText()!= "" && this.txtFieldNom.getText() != ""){
+            this.addClient(this.txtFieldNom.getText(), this.txtFieldPrenom.getText(), (String)this.comboSexe.getSelectedItem());
+            this.callBack.dataAddedToDb();
+            this.dispose();
+        }
+        
+    }//GEN-LAST:event_buttonAjouterActionPerformed
+    private void addClient(String nom,String prenom,String sexe){
+        
+         Connection con = dataModel.getConnection();
+            PreparedStatement addUser = null;
+            
+            try {
+                con.setAutoCommit(false);
+                addUser = con.prepareStatement(this.ADD_CLIENT);
+                addUser.setString(1,sexe);
+                addUser.setString(2,nom);
+                addUser.setString(3,prenom);
+                addUser.execute();
+                con.commit();
+     
+            } catch (SQLException e ) {
+                e.printStackTrace();
+                if (con != null) {
+                try {
+                    System.err.print("Transaction is being rolled back");
+                    con.rollback();
+                } catch(SQLException excep) {
+                    excep.printStackTrace();
+                }
+                }
+            } finally {
+                try {
+                    if (addUser != null) { addUser.close(); }
+                    
+                    con.setAutoCommit(true);
+                    dataModel.releaseConnection();
+            } catch (SQLException ex) {
+                Logger.getLogger(AddClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+       
+        
+        
+    }
+    private DataModel dataModel;
+    private String ADD_CLIENT = "INSERT INTO  `caisse`.`user` (`iduser` ,`sexe` ,`nom` ,`prenom` ,`fidelite`)"+
+                                                           "VALUES (NULL ,"+
+                                                                    "?,"+
+                                                                    "?,"+
+                                                                    "?,"+
+                                                                    "0)";
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JButton buttonAjouter;
+    private javax.swing.JComboBox comboSexe;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

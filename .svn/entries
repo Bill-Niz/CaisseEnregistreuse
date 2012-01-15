@@ -1,14 +1,14 @@
 10
 
 dir
-11
+24
 svn://kmeleon@quizroom.dyndns.org/CaisseEnregistreuse
 svn://kmeleon@quizroom.dyndns.org
 
 
 
-2011-11-23T14:53:34.062213Z
-11
+2011-11-28T20:37:52.869617Z
+24
 kmeleon
 has-props
 
@@ -35,7 +35,7 @@ d08ad3dc-5b73-4a6f-a123-029d705c2b7c
 
 Bil.pdf
 file
-
+23
 
 
 
@@ -67,9 +67,12 @@ has-props
 
 1485
 
+GIT
+dir
+
 build.xml
 file
-
+23
 
 
 
@@ -103,7 +106,7 @@ kmeleon
 
 hello.pdf
 file
-
+23
 
 
 
@@ -140,7 +143,7 @@ dir
 
 manifest.mf
 file
-
+23
 
 
 

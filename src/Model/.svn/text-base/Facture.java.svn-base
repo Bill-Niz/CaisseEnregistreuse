@@ -8,14 +8,18 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.itextpdf.text.pdf.*;
+import java.awt.Desktop;
+import java.io.File;
 
 
 public class Facture {
 
+    
   private String reference;
   private Date date;
   public ProduitRepository listProduit;
   private int remise = 0;
+  
   
   
   private java.text.SimpleDateFormat DATE_FORMAT = new java.text.SimpleDateFormat("dd-MM-yyyy");
@@ -76,12 +80,14 @@ public class Facture {
      * @param path 
      */
     public void generatePdf(String path){
+        String filePath = path+ this.reference+"_" + this.DATE_FORMAT.format(date) +".pdf";
       
         try {
             
             try {
                 Document document=new Document();
-                PdfWriter.getInstance(document,new FileOutputStream(path+ this.reference+"_" + this.DATE_FORMAT.format(date) +".pdf"));
+                
+                PdfWriter.getInstance(document,new FileOutputStream(filePath));
                 document.open();
                
                 Paragraph datePara = new Paragraph(this.F_DATE_FORMAT.format(date));
@@ -115,6 +121,7 @@ public class Facture {
         } catch (DocumentException ex) {
             Logger.getLogger(Facture.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.ShowPDF(filePath);
       
     }
     /**
@@ -162,6 +169,31 @@ public class Facture {
         table.addCell(prix+" €");
         return table;
     }
+    private void ShowPDF(String path){
+         try {
+ 
+		File pdfFile = new File(path);
+		if (pdfFile.exists()) {
+ 
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(pdfFile);
+			} else {
+				System.out.println("Awt Desktop is not supported!");
+			}
+ 
+		} else {
+			System.out.println("File is not exists!");
+		}
+ 
+		System.out.println("Done");
+ 
+	  } catch (Exception ex) {
+		ex.printStackTrace();
+	  }
+ 
+	
+    }
+
 /**
      * 
      * @return Date

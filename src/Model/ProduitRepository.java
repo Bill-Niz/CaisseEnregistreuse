@@ -1,5 +1,7 @@
 package Model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -102,6 +104,7 @@ public  class ProduitRepository extends Repository  {
                        
                         Produit p = new Produit(ID,titre, prix, stock,0);
                         add(p);
+                       
                         
                          // Ajout des données brutes
                         String[] record = new String[colCount];
@@ -109,14 +112,16 @@ public  class ProduitRepository extends Repository  {
                             record[i] = result.getString(i + 1);
                         }
                         this.TableList.addElement(record);
+                        this.fireTableChanged(null);
+                       
                        
                     
                         
             }
+            result.getStatement().close();
+            result.close();
+            this.dataSource.releaseConnection();
             
-            //result.close();
-            //result.getStatement().close();
-            //this.dataSource.getConnection().close();
             
         } catch (SQLException ex) {
             Logger.getLogger(DataModel.class.getName()).log(Level.SEVERE, null, ex);
@@ -162,8 +167,10 @@ public  class ProduitRepository extends Repository  {
                     
                         
             }
-            //result.close();
-            //result.getStatement().close();
+            
+            result.getStatement().close();
+            result.close();
+            this.dataSource.releaseConnection();
             
         } catch (SQLException ex) {
             Logger.getLogger(DataModel.class.getName()).log(Level.SEVERE, null, ex);
@@ -171,5 +178,49 @@ public  class ProduitRepository extends Repository  {
     
     
     }
+    /**
+     * 
+     * @param id 
+     */
+    public void updateProduitFromID(String id,String titre,String description,float prix,int stock){
+        Connection con = this.dataSource.getConnection();
+        PreparedStatement addUpdateProduit = null;
+        
+        try{
+      con.setAutoCommit(false);
+      addUpdateProduit = con.prepareStatement(QUERY.UPDATE_PRODUIT_BY_ID);
+      
+      // Update Produit
+      addUpdateProduit.setString(1,titre);
+      addUpdateProduit.setString(2, description);
+      addUpdateProduit.setFloat(3,prix);
+      addUpdateProduit.setInt(4, stock);
+      addUpdateProduit.setInt(5,Integer.valueOf(id));
+     
+      addUpdateProduit.execute();
+      con.commit();
+        }catch (SQLException e ) {
+      e.printStackTrace();
+      
+      
+      if (con != null) {
+        try {
+          System.err.print("Transaction is being rolled back");
+          con.rollback();
+        } catch(SQLException excep) {
+          excep.printStackTrace();
+        }
+      }
+    } finally {
+            try {
+                if (addUpdateProduit != null) { addUpdateProduit.close(); }
+                con.setAutoCommit(true);
+                this.dataSource.releaseConnection();
+            } catch (SQLException ex) {
+                Logger.getLogger(Panier.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
+    }
+    
     
 }

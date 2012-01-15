@@ -44,7 +44,10 @@ public class JTableRender extends DefaultTableCellRenderer {
         Object oR = table.getValueAt(row, 6);
         String  p = (String)oR;
         if(Integer.valueOf(p) <5){
+        component.setBackground(new Color(255,189,23));}
+        if(Integer.valueOf(p) ==0){
         component.setBackground(new Color(255,0,0));}
+        
         return component;
     }
 }

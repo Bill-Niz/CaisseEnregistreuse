@@ -36,7 +36,7 @@
               </Group>
               <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jComboBox1" alignment="0" pref="117" max="32767" attributes="1"/>
+                  <Component id="comboSexe" alignment="0" pref="117" max="32767" attributes="1"/>
                   <Component id="txtFieldPrenom" alignment="0" max="32767" attributes="1"/>
                   <Component id="txtFieldNom" alignment="0" min="-2" pref="197" max="-2" attributes="1"/>
               </Group>
@@ -44,7 +44,7 @@
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace pref="270" max="32767" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <Component id="buttonAjouter" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -65,10 +65,10 @@
               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
+                  <Component id="comboSexe" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <Component id="buttonAjouter" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -100,17 +100,23 @@
         <Property name="toolTipText" type="java.lang.String" value="Prenom"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBox1">
+    <Component class="javax.swing.JComboBox" name="comboSexe">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new javax.swing.DefaultComboBoxModel(new String[] { &quot;M.&quot;, &quot;Mme&quot;, &quot;Melle&quot; })" type="code"/>
         </Property>
+        <Property name="selectedIndex" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="0" type="code"/>
+        </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="buttonAjouter">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ajouter"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAjouterActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

@@ -20,12 +20,14 @@ public  class DataModel  {
     private String PWD="FRaceKpYcfupYbvL";
     private String URL="jdbc:mysql://";
     private Connection connection;
+    private int instance=0;
     
     
     
         
     public DataModel(){
         connect();
+        this.instance ++;
     
     }
 
@@ -41,9 +43,9 @@ public  class DataModel  {
         
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            System.out.println("Driver OK!");
+            //System.out.println("Driver OK!");
             this.connection = DriverManager.getConnection(this.URL, this.USER, this.PWD);
-            System.out.println("Connection effective");
+            //System.out.println("Connection effective");
         } catch (SQLException ex) {
             Logger.getLogger(DataModel.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -58,6 +60,7 @@ public  class DataModel  {
      * @return ResultSEt
      */
     public ResultSet getAllDataFromTable(String table){
+        this.connection = getConnection();
         ResultSet result = null;
         String query = "SELECT * FROM `"+ table +"` ";
         Statement state ;
@@ -68,10 +71,29 @@ public  class DataModel  {
         } catch (SQLException ex) {
             Logger.getLogger(DataModel.class.getName()).log(Level.SEVERE, null, ex);
         }
+                
         
         return result;
     }
-    
+    /**
+     * 
+     */
+    public void releaseConnection(){
+        System.out.println("release inst : " + this.instance);
+        this.instance--;
+        if(this.instance == 1){
+            try {
+                this.connection.close();
+                this.connection = null;
+                System.out.println("Connection closed");
+            } catch (SQLException ex) {
+                Logger.getLogger(DataModel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            
+        }
+        
+    }
     
     /**
      * 
@@ -145,6 +167,18 @@ public  class DataModel  {
      * @return Connection
      */
     public Connection getConnection() {
+        
+        try {
+            if(this.connection == null || this.connection.isClosed()){
+               this.connection = DriverManager.getConnection(this.URL, this.USER, this.PWD);
+               
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DataModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.instance++;
+        System.out.println("New inst : " + this.instance);
+        
         return connection;
     }
     /**

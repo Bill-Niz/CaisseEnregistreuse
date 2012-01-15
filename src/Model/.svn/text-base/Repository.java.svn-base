@@ -26,6 +26,7 @@ public  class Repository extends AbstractTableModel implements ComboBoxModel {
         this.listenerList = new javax.swing.event.EventListenerList();
         this.TableList = new Vector();
         
+        
     }
     
    /**
@@ -140,6 +141,14 @@ public  class Repository extends AbstractTableModel implements ComboBoxModel {
     @Override
     public Object getValueAt(int row, int col) {
        return ((String[]) this.TableList.elementAt(row))[col];
+        
+    }
+    
+    
+    
+    
+    public Produit getProduitAt(int index) {
+       return (Produit) this.TableList.get(index);
         
     }
     
